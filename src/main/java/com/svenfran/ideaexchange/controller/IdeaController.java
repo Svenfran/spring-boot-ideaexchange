@@ -40,9 +40,15 @@ public class IdeaController {
         return new ResponseEntity<>(updateIdea, HttpStatus.OK);
     }
 
-    @DeleteMapping("ideas/delete/{id}")
+    @DeleteMapping("/ideas/delete/{id}")
     public ResponseEntity<Idea> deleteIdea(@PathVariable("id") Long id) {
         ideaService.deleteIdea(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @GetMapping("/search/findIdeasByCategory")
+    public ResponseEntity<List<Idea>> getIdeasByCategoryId(@RequestParam("categoryId") Long categoryId) {
+        List<Idea> ideas = ideaService.getIdeasByCategoryId(categoryId);
+        return new ResponseEntity<>(ideas, HttpStatus.OK);
     }
 }

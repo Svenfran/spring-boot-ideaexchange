@@ -37,4 +37,10 @@ public class IdeaService {
     public void deleteIdea(Long id) {
         ideaRepository.deleteById(id);
     }
+
+    public List<Idea> getIdeasByCategoryId(Long categoryId) {
+        List<Idea> ideas = new ArrayList<>();
+        ideaRepository.findByCategoriesId(categoryId).forEach(ideas::add);
+        return ideas;
+    }
 }
