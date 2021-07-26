@@ -47,8 +47,8 @@ public class IdeaController {
     }
 
     @GetMapping("/search/findIdeasByCategory")
-    public ResponseEntity<List<Idea>> getIdeasByCategoryId(@RequestParam("categoryId") Long categoryId) {
-        List<Idea> ideas = ideaService.getIdeasByCategoryId(categoryId);
+    public ResponseEntity<List<Idea>> getIdeasByCategoryId(@RequestParam("categoryIds") List<Long> categoryIds) {
+        List<Idea> ideas = ideaService.getIdeasByCategoryId(categoryIds);
         return new ResponseEntity<>(ideas, HttpStatus.OK);
     }
 }

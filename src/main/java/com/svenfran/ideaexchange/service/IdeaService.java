@@ -38,9 +38,9 @@ public class IdeaService {
         ideaRepository.deleteById(id);
     }
 
-    public List<Idea> getIdeasByCategoryId(Long categoryId) {
+    public List<Idea> getIdeasByCategoryId(List<Long> categoryIds) {
         List<Idea> ideas = new ArrayList<>();
-        ideaRepository.findByCategoriesId(categoryId).forEach(ideas::add);
+        ideaRepository.findAllByCategoryIds(categoryIds).forEach(ideas::add);
         return ideas;
     }
 }
