@@ -19,5 +19,5 @@ public interface IdeaRepository extends CrudRepository<Idea, Long> {
             "WHERE category.id IN :ids", nativeQuery = true)
     List<Idea> findAllByCategoryIds(@Param("ids") List<Long> ids);
 
-//    List<Idea> findByCategoriesId(Long categoryId);
+    List<Idea> findByCategoriesId(Long categoryId);
 }
