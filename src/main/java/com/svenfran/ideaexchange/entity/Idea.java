@@ -24,9 +24,11 @@ public class Idea implements Serializable {
     private String description;
 
     @Column(name = "is_open")
+    @JsonProperty
     private boolean isOpen;
 
     @Column(name = "is_idea")
+    @JsonProperty
     private boolean isIdea;
 
     @Column(name = "date_created")
