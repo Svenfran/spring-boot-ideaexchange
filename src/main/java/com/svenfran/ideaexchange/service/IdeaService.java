@@ -49,4 +49,10 @@ public class IdeaService {
         ideaRepository.findByCategoriesId(categoryId).forEach(ideas::add);
         return ideas;
     }
+
+    public List<Idea> getIdeasByQuery(String query) {
+        List<Idea> ideas = new ArrayList<>();
+        ideaRepository.findBySearchQuery(query).forEach(ideas::add);
+        return ideas;
+    }
 }

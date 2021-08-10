@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.Id;
 import java.util.List;
 
 @RestController
@@ -49,6 +50,12 @@ public class IdeaController {
     @GetMapping("/search/findIdeasByCategory")
     public ResponseEntity<List<Idea>> getIdeasByCategoryId(@RequestParam("categoryIds") List<Long> categoryIds) {
         List<Idea> ideas = ideaService.getIdeasByCategoryIds(categoryIds);
+        return new ResponseEntity<>(ideas, HttpStatus.OK);
+    }
+
+    @GetMapping("/search/findIdeasByQuery")
+    public ResponseEntity<List<Idea>> getIdeasByQuery(@RequestParam("query") String query) {
+        List<Idea> ideas = ideaService.getIdeasByQuery(query);
         return new ResponseEntity<>(ideas, HttpStatus.OK);
     }
 }
