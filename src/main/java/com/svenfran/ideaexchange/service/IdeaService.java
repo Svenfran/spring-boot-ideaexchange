@@ -38,15 +38,15 @@ public class IdeaService {
         ideaRepository.deleteById(id);
     }
 
-    public List<Idea> getIdeasByCategoryIds(List<Long> categoryIds) {
+    public List<Idea> getIdeasByCategoryIds(List<Long> categoryIds, boolean isIdea, Integer countCategoryIds) {
         List<Idea> ideas = new ArrayList<>();
-        ideaRepository.findAllByCategoryIds(categoryIds).forEach(ideas::add);
+        ideaRepository.findAllByCategoryIds(categoryIds, isIdea, countCategoryIds).forEach(ideas::add);
         return ideas;
     }
 
     public List<Idea> getIdeasByCategory(Long categoryId) {
         List<Idea> ideas = new ArrayList<>();
-        ideaRepository.findByCategoriesId(categoryId).forEach(ideas::add);
+        ideaRepository.findByCategoriesIdOrderByDateCreatedDesc(categoryId).forEach(ideas::add);
         return ideas;
     }
 
