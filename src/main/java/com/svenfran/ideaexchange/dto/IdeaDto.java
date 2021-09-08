@@ -1,12 +1,14 @@
 package com.svenfran.ideaexchange.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.svenfran.ideaexchange.entity.Category;
 
 import java.util.Date;
 import java.util.Set;
 
-public class IdeaDTO {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class IdeaDto {
 
     private Long id;
     private String title;
@@ -20,7 +22,7 @@ public class IdeaDTO {
     private Set<Category> categories;
 
 
-    public IdeaDTO(Long id, String title, String description, boolean isOpen, boolean isIdea, Date dateCreated, Date lastUpdated, Set<Category> categories) {
+    public IdeaDto(Long id, String title, String description, boolean isOpen, boolean isIdea, Date dateCreated, Date lastUpdated, Set<Category> categories) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -31,7 +33,7 @@ public class IdeaDTO {
         this.categories = categories;
     }
 
-    public IdeaDTO() {}
+    public IdeaDto() {}
 
     public Long getId() {
         return id;
@@ -102,7 +104,7 @@ public class IdeaDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        IdeaDTO ideaDTO = (IdeaDTO) o;
+        IdeaDto ideaDTO = (IdeaDto) o;
 
         return id.equals(ideaDTO.id);
     }

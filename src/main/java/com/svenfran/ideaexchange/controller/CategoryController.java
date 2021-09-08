@@ -1,9 +1,11 @@
 package com.svenfran.ideaexchange.controller;
 
+import com.svenfran.ideaexchange.dto.IdeaDto;
 import com.svenfran.ideaexchange.entity.Category;
 import com.svenfran.ideaexchange.entity.Idea;
 import com.svenfran.ideaexchange.service.CategoryService;
 import com.svenfran.ideaexchange.service.IdeaService;
+import com.svenfran.ideaexchange.utils.DtoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +32,9 @@ public class CategoryController {
     }
 
     @GetMapping("categories/{id}/ideas")
-    public ResponseEntity<List<Idea>> getIdeasByCategory(@PathVariable("id") Long id) {
+    public ResponseEntity<List<IdeaDto>> getIdeasByCategory(@PathVariable("id") Long id) {
         List<Idea> ideas = ideaService.getIdeasByCategory(id);
-        return new ResponseEntity<>(ideas, HttpStatus.OK);
+        return DtoMapper.mapToIdeaDtoList(ideas);
     }
+
 }

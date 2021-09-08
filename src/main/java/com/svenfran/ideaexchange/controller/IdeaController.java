@@ -1,15 +1,15 @@
 package com.svenfran.ideaexchange.controller;
 
-import com.svenfran.ideaexchange.dto.IdeaDTO;
+import com.svenfran.ideaexchange.dto.IdeaDto;
 import com.svenfran.ideaexchange.entity.Idea;
 import com.svenfran.ideaexchange.service.IdeaService;
+import com.svenfran.ideaexchange.utils.DtoMapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,9 +20,9 @@ public class IdeaController {
     private IdeaService ideaService;
 
     @GetMapping("/ideas")
-    public ResponseEntity<List<IdeaDTO>> getAllIdeas() {
+    public ResponseEntity<List<IdeaDto>> getAllIdeas() {
         List<Idea> ideas = ideaService.getAllIdeas();
-        return ideasToIdeaDTOS(ideas);
+        return DtoMapper.mapToIdeaDtoList(ideas);
     }
 
     @PostMapping("/ideas/add")
@@ -32,21 +32,10 @@ public class IdeaController {
     }
 
     @GetMapping("/ideas/{id}")
-    public ResponseEntity<IdeaDTO> getIdeaById(@PathVariable("id") Long id) {
+    public ResponseEntity<IdeaDto> getIdeaById(@PathVariable("id") Long id) {
         Idea idea = ideaService.getIdeaById(id);
-        IdeaDTO ideaDTO = new IdeaDTO();
-
-        if (idea != null) {
-            if (idea.isOpen()) {
-                BeanUtils.copyProperties(idea, ideaDTO);
-            } else {
-                BeanUtils.copyProperties(idea, ideaDTO, "description");
-            }
-            return ResponseEntity.ok(ideaDTO);
-        }
-        return ResponseEntity.notFound().build();
+        return DtoMapper.mapToIdeaDto(idea);
     }
-
 
     @PutMapping("/ideas/update")
     public ResponseEntity<Idea> updateIdea(@RequestBody Idea idea) {
@@ -61,30 +50,16 @@ public class IdeaController {
     }
 
     @GetMapping("/search/findIdeasByCategory")
-    public ResponseEntity<List<IdeaDTO>> getIdeasByCategoryId(@RequestParam("categoryIds") List<Long> categoryIds, @RequestParam("isIdea") boolean isIdea) {
+    public ResponseEntity<List<IdeaDto>> getIdeasByCategoryId(@RequestParam("categoryIds") List<Long> categoryIds, @RequestParam("isIdea") boolean isIdea) {
         Integer countCategoryIds = categoryIds.size();
         List<Idea> ideas = ideaService.getIdeasByCategoryIds(categoryIds, isIdea, countCategoryIds);
-        return ideasToIdeaDTOS(ideas);
+        return DtoMapper.mapToIdeaDtoList(ideas);
     }
 
     @GetMapping("/search/findIdeasByQuery")
-    public ResponseEntity<List<IdeaDTO>> getIdeasByQuery(@RequestParam("query") String query) {
+    public ResponseEntity<List<IdeaDto>> getIdeasByQuery(@RequestParam("query") String query) {
         List<Idea> ideas = ideaService.getIdeasByQuery(query);
-        return ideasToIdeaDTOS(ideas);
+        return DtoMapper.mapToIdeaDtoList(ideas);
     }
 
-    public ResponseEntity<List<IdeaDTO>> ideasToIdeaDTOS(List<Idea> ideas) {
-        List<IdeaDTO> ideaDTOS = new ArrayList<>();
-
-        for (Idea idea : ideas) {
-            IdeaDTO ideaDTO = new IdeaDTO();
-            if (idea.isOpen()) {
-                BeanUtils.copyProperties(idea, ideaDTO);
-            } else {
-                BeanUtils.copyProperties(idea, ideaDTO, "description");
-            }
-            ideaDTOS.add(ideaDTO);
-        }
-        return ResponseEntity.ok(ideaDTOS);
-    }
 }
