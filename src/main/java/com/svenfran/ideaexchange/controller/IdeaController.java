@@ -4,7 +4,6 @@ import com.svenfran.ideaexchange.dto.IdeaDto;
 import com.svenfran.ideaexchange.entity.Idea;
 import com.svenfran.ideaexchange.service.IdeaService;
 import com.svenfran.ideaexchange.utils.DtoMapper;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -49,10 +48,17 @@ public class IdeaController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @GetMapping("/search/findIdeasByCategory")
+    @GetMapping("/search/findIdeasByCategoryAndIdea")
     public ResponseEntity<List<IdeaDto>> getIdeasByCategoryId(@RequestParam("categoryIds") List<Long> categoryIds, @RequestParam("isIdea") boolean isIdea) {
         Integer countCategoryIds = categoryIds.size();
-        List<Idea> ideas = ideaService.getIdeasByCategoryIds(categoryIds, isIdea, countCategoryIds);
+        List<Idea> ideas = ideaService.getIdeasByCategoryIdsAndIdeaFlag(categoryIds, isIdea, countCategoryIds);
+        return DtoMapper.mapToIdeaDtoList(ideas);
+    }
+
+    @GetMapping("/search/findIdeasByCategory")
+    public ResponseEntity<List<IdeaDto>> getIdeasByCategoryId(@RequestParam("categoryIds") List<Long> categoryIds) {
+        Integer countCategoryIds = categoryIds.size();
+        List<Idea> ideas = ideaService.getIdeasByCategoryIds(categoryIds, countCategoryIds);
         return DtoMapper.mapToIdeaDtoList(ideas);
     }
 

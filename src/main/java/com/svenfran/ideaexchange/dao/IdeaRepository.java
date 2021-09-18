@@ -11,8 +11,7 @@ import java.util.List;
 public interface IdeaRepository extends CrudRepository<Idea, Long> {
 
     List<Idea> findAllByOrderByDateCreatedDesc();
-    
-    // Query muss noch erweitert werden. Filtern nach mehreren Categorien und typ (is_idea)
+
     @Query(value =
             "SELECT *, count(*) FROM Idea " +
             "INNER JOIN idea_category ic ON ic.idea_id = idea.id " +
@@ -20,8 +19,18 @@ public interface IdeaRepository extends CrudRepository<Idea, Long> {
             "WHERE category.id IN :ids AND is_idea = :isIdea " +
             "GROUP BY idea.id HAVING count(*) = :countCategoryIds " +
             "ORDER BY date_created DESC", nativeQuery = true)
+    List<Idea> findAllByCategoryIdsAndIdeaFlag(@Param("ids") List<Long> ids,
+                                               @Param("isIdea") boolean isIdea,
+                                               @Param("countCategoryIds") Integer countCategoryIds);
+
+    @Query(value =
+            "SELECT *, count(*) FROM Idea " +
+                    "INNER JOIN idea_category ic ON ic.idea_id = idea.id " +
+                    "INNER JOIN Category ON ic.category_id = category.id " +
+                    "WHERE category.id IN :ids " +
+                    "GROUP BY idea.id HAVING count(*) = :countCategoryIds " +
+                    "ORDER BY date_created DESC", nativeQuery = true)
     List<Idea> findAllByCategoryIds(@Param("ids") List<Long> ids,
-                                    @Param("isIdea") boolean isIdea,
                                     @Param("countCategoryIds") Integer countCategoryIds);
 
     List<Idea> findByCategoriesIdOrderByDateCreatedDesc(Long categoryId);
