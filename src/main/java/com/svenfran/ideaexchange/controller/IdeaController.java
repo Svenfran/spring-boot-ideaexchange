@@ -49,9 +49,15 @@ public class IdeaController {
     }
 
     @GetMapping("/search/findIdeasByCategoryAndIdea")
-    public ResponseEntity<List<IdeaDto>> getIdeasByCategoryId(@RequestParam("categoryIds") List<Long> categoryIds, @RequestParam("isIdea") boolean isIdea) {
+    public ResponseEntity<List<IdeaDto>> getIdeasByCategoryIdsAndIsIdea(@RequestParam("categoryIds") List<Long> categoryIds, @RequestParam("isIdea") boolean isIdea) {
         Integer countCategoryIds = categoryIds.size();
         List<Idea> ideas = ideaService.getIdeasByCategoryIdsAndIdeaFlag(categoryIds, isIdea, countCategoryIds);
+        return DtoMapper.mapToIdeaDtoList(ideas);
+    }
+
+    @GetMapping("/search/findIdeasByIsIdea")
+    public ResponseEntity<List<IdeaDto>> getIdeasByIsIdea(@RequestParam("isIdea") boolean isIdea) {
+        List<Idea> ideas = ideaService.getIdeasByIsIdea(isIdea);
         return DtoMapper.mapToIdeaDtoList(ideas);
     }
 

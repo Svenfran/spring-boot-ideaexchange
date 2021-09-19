@@ -50,6 +50,12 @@ public class IdeaService {
         return ideas;
     }
 
+    public List<Idea> getIdeasByIsIdea(boolean isIdea) {
+        List<Idea> ideas = new ArrayList<>();
+        ideaRepository.findAllByIsIdeaOrderByDateCreatedDesc(isIdea).forEach(ideas::add);
+        return ideas;
+    }
+
     public List<Idea> getIdeasByCategory(Long categoryId) {
         List<Idea> ideas = new ArrayList<>();
         ideaRepository.findByCategoriesIdOrderByDateCreatedDesc(categoryId).forEach(ideas::add);

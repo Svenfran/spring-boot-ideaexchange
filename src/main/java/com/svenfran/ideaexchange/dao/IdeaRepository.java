@@ -35,6 +35,8 @@ public interface IdeaRepository extends CrudRepository<Idea, Long> {
 
     List<Idea> findByCategoriesIdOrderByDateCreatedDesc(Long categoryId);
 
+    List<Idea> findAllByIsIdeaOrderByDateCreatedDesc(boolean isIdea);
+
     @Query(value =
             "SELECT * FROM Idea WHERE " +
             "lower(title) LIKE lower(CONCAT('%', :query, '%')) OR " +
